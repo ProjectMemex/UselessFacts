@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totally Useless Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+        }
+        .fact {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .ad-placeholder {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e0e0e0;
+            border: 2px dashed #bbb;
+            color: #555;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Totally Useless Facts</h1>
+
+    <div class="fact" id="fact">
+        Loading useless knowledge...
+    </div>
+
+    <button onclick="newFact()">Show Another Fact</button>
+
+    <div class="ad-placeholder">
+        <!-- Insert your AdSense code here -->
+        Ad Placeholder
+    </div>
+
+    <script>
+        const facts = [
+            "Every 60 seconds in Africa, a minute passes.",
+            "Bananas are berries, but strawberries aren't.",
+            "If you lift a kangaroo’s tail off the ground, it can’t hop.",
+            "A group of flamingos is called a 'flamboyance'.",
+            "Wombat poop is cube-shaped.",
+            "There are more fake flamingos in the world than real ones.",
+            "The unicorn is the national animal of Scotland.",
+            "Octopuses have three hearts.",
+            "Sloths can hold their breath longer than dolphins can.",
+            "You can't hum while holding your nose.",
+            "An eagle can kill a young deer and fly away with it.",
+			"A sloth's fart doesn't stink.",
+			"Peacocks sleep in trees.",
+			"Sloths can hold their breath longer than dolphins",
+			"Ice-cream warms your body.",
+			"You are enough.",
+			"You are worth it!",
+			"You are Kenough!",
+			"You can insert even two Iceland's in the Atlantic ocean.",
+            "If you shout for 8 years, 7 months, and 6 days, you will have produced enough sound energy to heat one cup of coffee."
+        ];
+
+        function newFact() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            document.getElementById('fact').textContent = facts[randomIndex];
+        }
+
+        // Load a fact when page loads
+        window.onload = newFact;
+    </script>
+
+	<nav>
+  <a href="privacy.html">Privacy Policy</a> |
+  <a href="about.html">About</a> |
+  <a href="contact.html">Contact</a>
+</nav>
+
+</body>
+</html>
