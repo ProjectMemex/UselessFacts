@@ -1,9 +1,12 @@
 const facts = [
-  { text: "Every 60 seconds in Africa, a minute passes.", weight: 100 },
-  { text: "Bananas are berries. Strawberries are not.", weight: 80 },
-  { text: "You blink more than 10 million times a year.", weight: 20 },
-  { text: "Octopuses have three hearts.", weight: 10 },
-  { text: "The word 'empty' has more letters than 'full'.", weight: 1 } // rare!
+  { text: "Every 60 seconds in Africa, a minute passes.", weight: 50 },
+  { text: "Bananas are berries. Strawberries are not.", weight: 50 },
+  { text: "You blink more than 10 million times a year.", weight: 50 },
+  { text: "Octopuses have three hearts.", weight: 50 },
+  { text: "The word 'empty' has more letters than 'full'.", weight: 50 } 
+  { text: "If you lift a kangaroo’s tail off the ground, it can’t hop.", weight: 50 }
+  { text: "If you lift a kangaroo’s tail off the ground, it can’t hop.", weight: 50 }
+  
 ];
 
 // Function to get weighted random fact
