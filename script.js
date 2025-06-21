@@ -54,12 +54,12 @@ const rareFacts = [
   { text: "You are Kenough!" }
 ];
 
-
-if (JSON.parse(localStorage.getItem("regularDone")) === true) {
-  index = Math.floor(Math.random() * rareFacts.length);
-  factElement.innerText = rareFacts[index].text;
-}
-
+function getUnusedIndices(key, total) {
+  let used = JSON.parse(localStorage.getItem(key)) || [];
+  if (used.length >= total) {
+    localStorage.setItem(key, JSON.stringify([]));
+    used = [];
+  }
   const remaining = [...Array(total).keys()].filter(i => !used.includes(i));
   const choice = remaining[Math.floor(Math.random() * remaining.length)];
   used.push(choice);
