@@ -20,7 +20,7 @@ const facts = [
   { text: "If you shout for 8 years, 7 months, and 6 days, you will have produced enough sound energy to heat one cup of coffee.", weight: 100 },
   { text: "Sometimes, babies below the age of 1 die of a sudden and unexplained death - it’s called SIDS.", weight: 100 },
 
-  // Rare RickRoll & motivational facts
+  // Rare facts
   { text: "Never gonna give you up...", weight: 1 },
   { text: "... never gonna let you down.", weight: 1 },
   { text: "Never gonna run around and desert you.", weight: 1 },
@@ -30,19 +30,30 @@ const facts = [
   { text: "You are Kenough!", weight: 1 }
 ];
 
-// Function to get weighted random fact
 function getWeightedRandom(facts) {
-  const weightedPool = [];
+  const totalWeight = facts.reduce((sum, fact) => sum + fact.weight, 0);
+  let threshold = Math.random() * totalWeight;
 
-  facts.forEach(fact => {
-    for (let i = 0; i < fact.weight; i++) {
-      weightedPool.push(fact.text);
+  for (let i = 0; i < facts.length; i++) {
+    threshold -= facts[i].weight;
+    if (threshold <= 0) {
+      return facts[i].text;
     }
-  });
+  }
 
-  const randomIndex = Math.floor(Math.random() * weightedPool.length);
-  return weightedPool[randomIndex];
+  // Fallback in case of weird rounding
+  return facts[0].text;
 }
 
-// Display the fact
-document.getElementById("fact").innerText = getWeightedRandom(facts);
+// Display the fact with fade-in
+const factElement = document.getElementById("fact");
+factElement.style.opacity = 0;
+
+const fact = getWeightedRandom(facts);
+factElement.innerText = fact;
+
+// Smooth fade-in effect
+setTimeout(() => {
+  factElement.style.transition = "opacity 1s";
+  factElement.style.opacity = 1;
+}, 100);
