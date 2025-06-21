@@ -12,22 +12,25 @@ const facts = [
   { text: "An eagle can kill a young deer and fly away with it.", weight: 100 },
   { text: "A sloth's fart doesn't stink.", weight: 100 },
   { text: "Peacocks sleep in trees.", weight: 100 },
+  { text: "Sloths can hold their breath longer than dolphins", weight: 100 },
   { text: "Ice-cream warms your body.", weight: 100 },
   { text: "You are enough.", weight: 100 },
   { text: "You are worth it!", weight: 100 },
   { text: "You can insert even two Iceland's in the Atlantic ocean.", weight: 100 },
   { text: "If you shout for 8 years, 7 months, and 6 days, you will have produced enough sound energy to heat one cup of coffee.", weight: 100 },
+  { text: "Sometimes, babies below the age of 1 die of a sudden and unexplained death - it’s called SIDS.", weight: 100 },
   { text: "Cows have best friends.", weight: 100 },
   { text: "Cow moos have regional accents.", weight: 100 },
   { text: "Sea otters hold hands while sleeping so they don’t drift apart.", weight: 100 },
   { text: "Pigeons can tell the difference between Picasso and Monet.", weight: 100 },
+  { text: "You’re more likely to get a computer virus from visiting a religious site than a porn site.", weight: 100 },
   { text: "Certain turtles can breathe through their butts.", weight: 100 },
   { text: "Wombats have backward-facing pouches.", weight: 100 },
   { text: "Apples float because they’re 25% air.", weight: 100 },
   { text: "The inventor of Pringles is buried in a Pringles can.", weight: 100 },
   { text: "The first oranges weren’t orange — they were green.", weight: 100 },
   { text: "Kangaroos can't walk backwards.", weight: 100 },
-  { text: "There’s a basketball court on the top floor of the US Supreme Court — it's nicknamed 'The Highest Court in the Land.'", weight: 100 },
+  { text: "There’s a basketball court on the top floor of the US Supreme Court — it's nicknamed “The Highest Court in the Land.”", weight: 100 },
   { text: "Space smells like seared steak, according to astronauts.", weight: 100 },
   { text: "Octopuses taste with their arms.", weight: 100 },
   { text: "Dolphins have names for each other.", weight: 100 },
@@ -38,36 +41,48 @@ const facts = [
   { text: "The inventor of the Frisbee was turned into a Frisbee after he died.", weight: 100 },
   { text: "In Switzerland, it’s illegal to own just one guinea pig.", weight: 100 },
   { text: "Your ears never stop growing.", weight: 100 },
-  { text: "Elephants can’t jump.", weight: 100 },
-
-  // Rare ones
-  { text: "Never gonna give you up...", weight: 1 },
-  { text: "... never gonna let you down.", weight: 1 },
-  { text: "Never gonna run around and desert you.", weight: 1 },
-  { text: "Never gonna make you cry...", weight: 1 },
-  { text: "... never gonna say goodbye.", weight: 1 },
-  { text: "Never gonna tell a lie and hurt you.", weight: 1 },
-  { text: "You are Kenough!", weight: 1 }
+  { text: "Elephants can’t jump.", weight: 100 }
 ];
 
-function getWeightedRandom(facts) {
-  const totalWeight = facts.reduce((sum, fact) => sum + fact.weight, 0);
-  let randomValue = Math.random() * totalWeight;
+const rareFacts = [
+  { text: "Never gonna give you up..." },
+  { text: "... never gonna let you down." },
+  { text: "Never gonna run around and desert you." },
+  { text: "Never gonna make you cry..." },
+  { text: "... never gonna say goodbye." },
+  { text: "Never gonna tell a lie and hurt you." },
+  { text: "You are Kenough!" }
+];
 
-  for (const fact of facts) {
-    if (randomValue < fact.weight) return fact.text;
-    randomValue -= fact.weight;
-  }
 
-  // Fallback (shouldn’t be hit unless rounding error)
-  return facts[Math.floor(Math.random() * facts.length)].text;
+if (JSON.parse(localStorage.getItem("regularDone")) === true) {
+  index = Math.floor(Math.random() * rareFacts.length);
+  factElement.innerText = rareFacts[index].text;
+}
+
+  const remaining = [...Array(total).keys()].filter(i => !used.includes(i));
+  const choice = remaining[Math.floor(Math.random() * remaining.length)];
+  used.push(choice);
+  localStorage.setItem(key, JSON.stringify(used));
+  return choice;
 }
 
 const factElement = document.getElementById("fact");
 factElement.style.opacity = 0;
 
-const fact = getWeightedRandom(facts);
-factElement.innerText = fact;
+let index;
+if (JSON.parse(localStorage.getItem("regularDone")) === true) {
+  index = Math.floor(Math.random() * rareFacts.length);
+  factElement.innerText = rareFacts[index];
+} else {
+  index = getUnusedIndices("shownFacts", facts.length);
+  factElement.innerText = facts[index].text;
+
+  const shownCount = JSON.parse(localStorage.getItem("shownFacts")).length;
+  if (shownCount === facts.length) {
+    localStorage.setItem("regularDone", true);
+  }
+}
 
 setTimeout(() => {
   factElement.style.transition = "opacity 1s";
