@@ -76,7 +76,7 @@ if (JSON.parse(localStorage.getItem("regularDone")) === true) {
   factElement.innerText = rareFacts[index];
 } else {
   index = getUnusedIndices("shownFacts", facts.length);
-  factElement.innerText = facts[index].text;
+  factElement.innerText = rareFacts[index].text;
 
   const shownCount = JSON.parse(localStorage.getItem("shownFacts")).length;
   if (shownCount === facts.length) {
