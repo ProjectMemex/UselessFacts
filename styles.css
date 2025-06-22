@@ -25,10 +25,3 @@ body {
   color: #555;
   margin-top: 20px;
 }
-
-.rare {
-  color: crimson;
-  font-style: italic;
-  animation: pulse 1s ease-in-out;
-}
-
