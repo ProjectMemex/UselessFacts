@@ -25,3 +25,15 @@ body {
   color: #555;
   margin-top: 20px;
 }
+
+.rare-fact {
+  color: #d64161;
+  font-weight: bold;
+  font-style: normal;
+  animation: rarePulse 2s infinite alternate;
+}
+
+@keyframes rarePulse {
+  0% { text-shadow: 0 0 5px #d64161; }
+  100% { text-shadow: 0 0 20px #ff4c68; }
+}
