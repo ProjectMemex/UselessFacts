@@ -17,6 +17,19 @@ body {
   font-size: 1.8rem;
   max-width: 700px;
   margin: 0 20px;
+  transition: all 0.5s ease;
+}
+
+.fact.rare {
+  color: #c0392b;
+  font-size: 2.2rem;
+  text-shadow: 1px 1px 3px #aaa;
+  animation: rareFlash 1s infinite alternate;
+}
+
+@keyframes rareFlash {
+  from { opacity: 0.6; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.03); }
 }
 
 .reload-note {
@@ -24,16 +37,4 @@ body {
   font-size: 1rem;
   color: #555;
   margin-top: 20px;
-}
-
-.rare-fact {
-  color: #d64161;
-  font-weight: bold;
-  font-style: normal;
-  animation: rarePulse 2s infinite alternate;
-}
-
-@keyframes rarePulse {
-  0% { text-shadow: 0 0 5px #d64161; }
-  100% { text-shadow: 0 0 20px #ff4c68; }
 }
