@@ -12,32 +12,31 @@ const facts = [
   { text: "An eagle can kill a young deer and fly away with it." },
   { text: "A sloth's fart doesn't stink." },
   { text: "Peacocks sleep in trees." },
-  { text: "Sloths can hold their breath longer than dolphins" },
   { text: "Ice-cream warms your body." },
   { text: "You are enough." },
   { text: "You are worth it!" },
-  { text: "You can insert even two Iceland's in the Atlantic ocean." },
-  { text: "If you shout for 8 years, 7 months, and 6 days, you will have produced enough sound energy to heat one cup of coffee." },
-  { text: "Sometimes, babies below the age of 1 die of a sudden and unexplained death - it’s called SIDS." },
+  { text: "You can insert even two Icelands in the Atlantic Ocean." },
+  { text: "If you shout for 8 years, 7 months, and 6 days, you'll heat one cup of coffee." },
+  { text: "Sometimes, babies under 1 die suddenly — it's called SIDS." },
   { text: "Cows have best friends." },
   { text: "Cow moos have regional accents." },
   { text: "Sea otters hold hands while sleeping so they don’t drift apart." },
   { text: "Pigeons can tell the difference between Picasso and Monet." },
-  { text: "You’re more likely to get a computer virus from visiting a religious site than a porn site." },
+  { text: "You're more likely to get a virus from a religious site than a porn site." },
   { text: "Certain turtles can breathe through their butts." },
   { text: "Wombats have backward-facing pouches." },
   { text: "Apples float because they’re 25% air." },
   { text: "The inventor of Pringles is buried in a Pringles can." },
   { text: "The first oranges weren’t orange — they were green." },
   { text: "Kangaroos can't walk backwards." },
-  { text: "There’s a basketball court on the top floor of the US Supreme Court — it's nicknamed “The Highest Court in the Land.”" },
+  { text: "There’s a basketball court on top of the US Supreme Court — 'The Highest Court in the Land'." },
   { text: "Space smells like seared steak, according to astronauts." },
   { text: "Octopuses taste with their arms." },
   { text: "Dolphins have names for each other." },
   { text: "The Twitter bird’s name is Larry." },
   { text: "A day on Venus is longer than its year." },
   { text: "Frogs can’t swallow with their eyes open." },
-  { text: "The longest hiccuping spree lasted 68 years (almost nice)." },
+  { text: "The longest hiccuping spree lasted 68 years." },
   { text: "The inventor of the Frisbee was turned into a Frisbee after he died." },
   { text: "In Switzerland, it’s illegal to own just one guinea pig." },
   { text: "Your ears never stop growing." },
@@ -45,53 +44,63 @@ const facts = [
 ];
 
 const rareFacts = [
-  "Never gonna give you up...",
-  "... never gonna let you down.",
-  "Never gonna run around and desert you.",
-  "Never gonna make you cry...",
-  "... never gonna say goodbye.",
-  "Never gonna tell a lie and hurt you.",
-  "You are Kenough!"
+  { text: "Never gonna give you up..." },
+  { text: "... never gonna let you down." },
+  { text: "Never gonna run around and desert you." },
+  { text: "Never gonna make you cry..." },
+  { text: "... never gonna say goodbye." },
+  { text: "Never gonna tell a lie and hurt you." },
+  { text: "You are Kenough!" }
 ];
 
-function getShuffledList(list) {
-  return [...list].sort(() => Math.random() - 0.5);
+function getRandomIndex(arrayLength, usedIndices) {
+  const availableIndices = [...Array(arrayLength).keys()].filter(i => !usedIndices.includes(i));
+  if (availableIndices.length === 0) return -1;
+  return availableIndices[Math.floor(Math.random() * availableIndices.length)];
 }
 
-function getCurrentIndex(key, total) {
-  let data = JSON.parse(localStorage.getItem(key)) || { index: 0, order: getShuffledList([...Array(total).keys()]) };
-  if (data.index >= total) {
-    localStorage.setItem(key, JSON.stringify({ index: 0, order: getShuffledList([...Array(total).keys()]) }));
-    data = JSON.parse(localStorage.getItem(key));
-    localStorage.setItem("regularDone", true);
+function displayFact(fact, isRare = false) {
+  const factElement = document.getElementById("fact");
+  factElement.style.opacity = 0;
+
+  if (isRare) {
+    factElement.classList.add("rare-fact");
+  } else {
+    factElement.classList.remove("rare-fact");
   }
-  const current = data.order[data.index];
-  data.index++;
-  localStorage.setItem(key, JSON.stringify(data));
-  return current;
+
+  setTimeout(() => {
+    factElement.innerText = fact;
+    factElement.style.transition = "opacity 1s";
+    factElement.style.opacity = 1;
+  }, 100);
 }
 
-const factElement = document.getElementById("fact");
-factElement.style.opacity = 0;
+const shownNormal = JSON.parse(localStorage.getItem("shownNormal") || "[]");
+const shownRare = JSON.parse(localStorage.getItem("shownRare") || "[]");
 
-let selectedFact = "";
+let factToShow = "";
 let isRare = false;
 
-if (localStorage.getItem("regularDone") === "true") {
-  const rareIndex = Math.floor(Math.random() * rareFacts.length);
-  selectedFact = rareFacts[rareIndex];
-  isRare = true;
+if (shownNormal.length < facts.length) {
+  const index = getRandomIndex(facts.length, shownNormal);
+  if (index !== -1) {
+    factToShow = facts[index].text;
+    shownNormal.push(index);
+    localStorage.setItem("shownNormal", JSON.stringify(shownNormal));
+  }
 } else {
-  const factIndex = getCurrentIndex("factProgress", facts.length);
-  selectedFact = facts[factIndex].text;
+  const index = getRandomIndex(rareFacts.length, shownRare);
+  if (index !== -1) {
+    factToShow = rareFacts[index].text;
+    shownRare.push(index);
+    localStorage.setItem("shownRare", JSON.stringify(shownRare));
+    isRare = true;
+  } else {
+    localStorage.setItem("shownNormal", JSON.stringify([]));
+    localStorage.setItem("shownRare", JSON.stringify([]));
+    factToShow = facts[Math.floor(Math.random() * facts.length)].text;
+  }
 }
 
-factElement.textContent = selectedFact;
-if (isRare) {
-  factElement.classList.add("rare");
-}
-
-setTimeout(() => {
-  factElement.style.transition = "opacity 1s";
-  factElement.style.opacity = 1;
-}, 100);
+displayFact(factToShow, isRare);
