@@ -12,7 +12,7 @@ const facts = [
   { text: "An eagle can kill a young deer and fly away with it." },
   { text: "A sloth's fart doesn't stink." },
   { text: "Peacocks sleep in trees." },
-  { text: "Sloths can hold their breath longer than dolphins." },
+  { text: "Sloths can hold their breath longer than dolphins" },
   { text: "Ice-cream warms your body." },
   { text: "You are enough." },
   { text: "You are worth it!" },
@@ -45,47 +45,50 @@ const facts = [
 ];
 
 const rareFacts = [
-  { text: "Never gonna give you up..." },
-  { text: "... never gonna let you down." },
-  { text: "Never gonna run around and desert you." },
-  { text: "Never gonna make you cry..." },
-  { text: "... never gonna say goodbye." },
-  { text: "Never gonna tell a lie and hurt you." },
-  { text: "You are Kenough!" }
+  "Never gonna give you up...",
+  "... never gonna let you down.",
+  "Never gonna run around and desert you.",
+  "Never gonna make you cry...",
+  "... never gonna say goodbye.",
+  "Never gonna tell a lie and hurt you.",
+  "You are Kenough!"
 ];
 
-function getUnusedIndex(key, total) {
-  let used = JSON.parse(localStorage.getItem(key)) || [];
-  if (used.length >= total) {
-    used = [];
+function getShuffledList(list) {
+  return [...list].sort(() => Math.random() - 0.5);
+}
+
+function getCurrentIndex(key, total) {
+  let data = JSON.parse(localStorage.getItem(key)) || { index: 0, order: getShuffledList([...Array(total).keys()]) };
+  if (data.index >= total) {
+    localStorage.setItem(key, JSON.stringify({ index: 0, order: getShuffledList([...Array(total).keys()]) }));
+    data = JSON.parse(localStorage.getItem(key));
+    localStorage.setItem("regularDone", true);
   }
-  const remaining = [...Array(total).keys()].filter(i => !used.includes(i));
-  const choice = remaining[Math.floor(Math.random() * remaining.length)];
-  used.push(choice);
-  localStorage.setItem(key, JSON.stringify(used));
-  return choice;
+  const current = data.order[data.index];
+  data.index++;
+  localStorage.setItem(key, JSON.stringify(data));
+  return current;
 }
 
 const factElement = document.getElementById("fact");
 factElement.style.opacity = 0;
 
-let index;
+let selectedFact = "";
 let isRare = false;
 
-const shownRegular = JSON.parse(localStorage.getItem("shownRegular")) || [];
-if (shownRegular.length >= facts.length) {
+if (localStorage.getItem("regularDone") === "true") {
+  const rareIndex = Math.floor(Math.random() * rareFacts.length);
+  selectedFact = rareFacts[rareIndex];
   isRare = true;
-  index = Math.floor(Math.random() * rareFacts.length);
 } else {
-  index = getUnusedIndex("shownRegular", facts.length);
+  const factIndex = getCurrentIndex("factProgress", facts.length);
+  selectedFact = facts[factIndex].text;
 }
 
+factElement.textContent = selectedFact;
 if (isRare) {
-  factElement.innerText = rareFacts[index].text;
-  factElement.classList.add("rare-fact");
-} else {
-  factElement.innerText = facts[index].text;
-  factElement.classList.remove("rare-fact");
+  factElement.classList.add("rare");
 }
 
 setTimeout(() => {
